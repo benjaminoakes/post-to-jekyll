@@ -2,6 +2,8 @@
 
 Post to a GitHub Pages-based Jekyll site without futzing with frontmatter.
 
+(This is mostly a proof of concept at this point.)
+
 ## Usage
 
 1. Fork this repo to your account
