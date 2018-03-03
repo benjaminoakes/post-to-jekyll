@@ -8,15 +8,20 @@
     <h1>New Post</h1>
 
     <p>
-      Posting to <span id="repoDescriptor">(loading...)</span>
+      Posting to <span id="repo-descriptor">(loading...)</span>
+    </p>
+
+    <p>
+      <a href="#" id="build-from-markdown">Build Post from Markdown Link</a>
     </p>
 
     <form name="post">
       <label for="title">Title</label>
-      <input name="title">
+      <input name="title" style="width: 95%">
       <br>
       <textarea name="body" rows="20" style="width: 100%"></textarea>
       <br>
+      <input type="reset">
       <input type="submit" value="Post">
     </form>
 
@@ -76,7 +81,7 @@
   var config = JSON.parse(localStorage.repoConfig || "{}")
   var repo = new GitHubRepo(config)
 
-  document.getElementById('repoDescriptor').innerHTML = repo.descriptor()
+  document.getElementById('repo-descriptor').innerHTML = repo.descriptor()
 
   document.forms.repoConfig.onsubmit = function (event) {
     event.preventDefault()
@@ -94,6 +99,26 @@
     document.location.reload()
 
     return false
+  }
+
+  document.getElementById('build-from-markdown').onclick = function () {
+    var markdown
+
+    markdown = prompt('Markdown link?')
+
+    setTimeout(function () {
+      var matches, title, url
+
+      markdown = markdown.replace(/\|/, '-') // Kramdown tries to turn pipes into tables
+      matches = markdown.match(/^\[(.*)\]\((.*)\)$/)
+      title = matches[1]
+      url = matches[2]
+
+      title = title.split(/ [-|] /)[0].trim()
+
+      document.forms.post.title.value = title
+      document.forms.post.body.value = `>\n\nSource: ${markdown}`
+    }, 100)
   }
 
   document.forms.post.onsubmit = function (event) {
