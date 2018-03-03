@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <title>Post to Jekyll</title>
+  </head>
+  <body>
+    <h1>New Post</h1>
+
+    <p>
+      Posting to <span id="repoDescriptor">(loading...)</span>
+    </p>
+
+    <form name="post">
+      <label for="title">Title</label>
+      <input name="title">
+      <br>
+      <textarea name="body" rows="20" style="width: 100%"></textarea>
+      <br>
+      <input type="submit" value="Post">
+    </form>
+
+    <details>
+      <summary>Configuration</summary>
+
+      <form name="repoConfig">
+        <label for="owner">Owner</label>
+        <input name="owner">
+        <br>
+        <label for="repo">Repo</label>
+        <input name="repo">
+        <br>
+        <label for="accessToken">Access Token</label>
+        <input name="accessToken">
+        <br>
+        <input type="submit" value="Save">
+      </form>
+    </details>
+
+<script>
+  var HTTP = {
+    put: function (url, data) {
+      var request = new XMLHttpRequest()
+      request.open("PUT", url, true)
+      request.send(data)
+      return request
+    }
+  }
+
+  GitHubRepo = function (attrs) {
+    this.owner = attrs.owner
+    this.repo = attrs.repo
+    this.accessToken = attrs.accessToken
+  }
+
+  GitHubRepo.prototype.descriptor = function (fragment) {
+    return `${this.owner}/${this.repo}`
+  }
+
+  GitHubRepo.prototype.repoUrl = function (fragment) {
+    return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
+  }
+
+  GitHubRepo.prototype.createFile = function (path, content) {
+    var url, data
+
+    url = this.repoUrl(`contents/${path}`)
+    data = JSON.stringify({
+      message: "test",
+      content: btoa(content),
+    })
+
+    return HTTP.put(url, data)
+  }
+
+  var config = JSON.parse(localStorage.repoConfig || "{}")
+  var repo = new GitHubRepo(config)
+
+  document.getElementById('repoDescriptor').innerHTML = repo.descriptor()
+
+  document.forms.repoConfig.onsubmit = function (event) {
+    event.preventDefault()
+
+    var formData = {
+      owner: this.owner.value,
+      repo: this.repo.value,
+      accessToken: this.accessToken.value,
+    }
+
+    localStorage.repoConfig = JSON.stringify(formData)
+
+    alert("Saved!")
+
+    document.location.reload()
+
+    return false
+  }
+
+  document.forms.post.onsubmit = function (event) {
+    event.preventDefault()
+
+    var isoDate = (new Date).toISOString().replace(/T.*$/,  '')
+    var saferTitle = JSON.stringify(this.title.value)
+    var filenameTitle = this.title.value.replace(/[^A-Za-z0-9 ]/g, '').replace(/ /g, '-')
+
+    var filename = `${isoDate}-${filenameTitle}`
+    var jekyllPost = `---
+layout: post
+title: ${saferTitle}
+date: ${isoDate}
+---
+
+${this.body.value}
+`
+
+    if (confirm("Post?")) {
+      request = repo.createFile(`_posts/${filename}.md`, jekyllPost)
+
+      request.onload = function () {
+        if (request.status >= 200 && request.status < 400) {
+          alert("Posted!")
+        } else {
+          alert("Unexpected status :(")
+        }
+      }
+
+      request.onerror = function () {
+        alert("Error :(")
+      }
+    }
+
+    return false
+  }
+
+</script>
+  </body>
+</html>
