@@ -55,30 +55,32 @@
     }
   }
 
-  GitHubRepo = function (attrs) {
-    this.owner = attrs.owner
-    this.repo = attrs.repo
-    this.accessToken = attrs.accessToken
-  }
+  class GitHubRepo {
+    constructor(attrs) {
+      this.owner = attrs.owner
+      this.repo = attrs.repo
+      this.accessToken = attrs.accessToken
+    }
 
-  GitHubRepo.prototype.descriptor = function (fragment) {
-    return `${this.owner}/${this.repo}`
-  }
+    descriptor(fragment) {
+      return `${this.owner}/${this.repo}`
+    }
 
-  GitHubRepo.prototype.repoUrl = function (fragment) {
-    return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
-  }
+    repoUrl (fragment) {
+      return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
+    }
 
-  GitHubRepo.prototype.createFile = function (path, content) {
-    var url, data
+    createFile (path, content) {
+      var url, data
 
-    url = this.repoUrl(`contents/${path}`)
-    data = JSON.stringify({
-      message: `Create ${path}`,
-      content: btoa(content),
-    })
+      url = this.repoUrl(`contents/${path}`)
+      data = JSON.stringify({
+        message: `Create ${path}`,
+        content: btoa(content),
+      })
 
-    return HTTP.put(url, data)
+      return HTTP.put(url, data)
+    }
   }
 
   var config = JSON.parse(localStorage.repoConfig || "{}")
