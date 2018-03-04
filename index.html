@@ -56,10 +56,10 @@
   }
 
   class GitHubRepo {
-    constructor(attrs) {
-      this.owner = attrs.owner
-      this.repo = attrs.repo
-      this.accessToken = attrs.accessToken
+    constructor({ owner, repo, accessToken }) {
+      this.owner = owner
+      this.repo = repo
+      this.accessToken = accessToken
     }
 
     descriptor(fragment) {
