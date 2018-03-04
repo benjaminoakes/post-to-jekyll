@@ -15,7 +15,7 @@
     </p>
 
     <p>
-      <a href="#" id="build-from-markdown">Build Post from Markdown Link</a>
+      <a href="#" id="build-from-markdown" class="btn btn-secondary btn-sm">Build Post from Markdown Link</a>
     </p>
 
     <form name="post">
@@ -114,15 +114,17 @@
     setTimeout(function () {
       var matches, title, url
 
-      markdown = markdown.replace(/\|/, '-') // Kramdown tries to turn pipes into tables
-      matches = markdown.match(/^\[(.*)\]\((.*)\)$/)
-      title = matches[1]
-      url = matches[2]
+      if (markdown) {
+        markdown = markdown.replace(/\|/, '-') // Kramdown tries to turn pipes into tables
+        matches = markdown.match(/^\[(.*)\]\((.*)\)$/)
+        title = matches[1]
+        url = matches[2]
 
-      title = title.split(/ [-|] /)[0].trim()
+        title = title.split(/ [-|] /)[0].trim()
 
-      document.forms.post.title.value = title
-      document.forms.post.body.value = `> \n\nSource: ${markdown}`
+        document.forms.post.title.value = title
+        document.forms.post.body.value = `> \n\nSource: ${markdown}`
+      }
     }, 100)
   }
 
