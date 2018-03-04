@@ -71,12 +71,16 @@
     }
 
     createFile (path, content) {
-      var url, data
+      var cleanedContent, url, data
+
+      // Prevent unprinting characters and other such nonsense from being a
+      // problem.  (InvalidCharacterError)
+      cleanedContent = content.replace(/[^\x00-\x7F]/g, "")
 
       url = this.repoUrl(`contents/${path}`)
       data = JSON.stringify({
         message: `Create ${path}`,
-        content: btoa(content),
+        content: btoa(cleanedContent),
       })
 
       return HTTP.put(url, data)
