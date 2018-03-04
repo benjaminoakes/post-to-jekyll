@@ -3,9 +3,11 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
     <title>Post to Jekyll</title>
   </head>
   <body>
+    <main class="container">
     <h1>New Post</h1>
 
     <p>
@@ -17,13 +19,12 @@
     </p>
 
     <form name="post">
-      <label for="title">Title</label>
-      <input name="title" style="width: 95%">
+      <input name="title" placeholder="Title" style="width: 100%">
       <br>
       <textarea name="body" rows="20" style="width: 100%"></textarea>
       <br>
-      <input type="submit" value="Post">
-      <input type="reset">
+      <input class="btn btn-primary" type="submit" value="Post">
+      <input class="btn btn-danger" type="reset">
     </form>
 
     <details>
@@ -42,6 +43,7 @@
         <input type="submit" value="Save">
       </form>
     </details>
+  </main>
 
 <script>
   var HTTP = {
