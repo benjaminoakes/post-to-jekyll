@@ -21,7 +21,7 @@
     <form name="post">
       <input name="title" placeholder="Title" autocomplete="off" style="width: 100%">
       <br>
-      <input name="spaceSeparatedCategories" placeholder="Space-separated categories" autocomplete="off" style="width: 100%">
+      <input name="category" placeholder="Category" autocomplete="off" style="width: 100%">
       <br>
       <textarea name="body" rows="15" style="width: 100%"></textarea>
       <br>
@@ -143,14 +143,14 @@
 
     var isoDate = (new Date).toISOString().replace(/T.*$/,  '')
     var saferTitle = JSON.stringify(this.title.value)
-    var spaceSeparatedCategories = JSON.stringify(this.spaceSeparatedCategories.value)
+    var category = JSON.stringify(this.category.value)
     var filenameTitle = this.title.value.replace(/[^A-Za-z0-9 ]/g, '').replace(/ /g, '-')
 
     var filename = `${isoDate}-${filenameTitle}`
     var jekyllPost = `---
 layout: post
 title: ${saferTitle}
-categories: ${spaceSeparatedCategories}
+category: ${category}
 date: ${isoDate}
 ---
 
