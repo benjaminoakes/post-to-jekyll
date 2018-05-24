@@ -70,6 +70,10 @@
       return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
     }
 
+    pathUrl (path) {
+      return `https://api.github.com/repos/${this.owner}/${this.repo}/blob/master/${path}`
+    }
+
     createFile (path, content) {
       var cleanedContent, url, data
 
@@ -150,11 +154,12 @@ ${this.body.value}
 `
 
     if (confirm("Post?")) {
-      request = repo.createFile(`_posts/${filename}.md`, jekyllPost)
+      let path = `_posts/${filename}.md`
+      request = repo.createFile(path, jekyllPost)
 
       request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
-          alert("Posted!")
+          document.location = repo.pathUrl(path)
         } else {
           alert("Unexpected status :(")
         }
