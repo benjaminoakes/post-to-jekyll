@@ -72,8 +72,8 @@
       return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
     }
 
-    pathUrl (path) {
-      return `https://api.github.com/repos/${this.owner}/${this.repo}/blob/master/${path}`
+    blobUrl (path) {
+      return `https://github.com/${this.owner}/${this.repo}/blob/master/${path}`
     }
 
     createFile (path, content) {
@@ -163,7 +163,7 @@ ${this.body.value}
 
       request.onload = function () {
         if (request.status >= 200 && request.status < 400) {
-          document.location = repo.pathUrl(path)
+          document.location = repo.blobUrl(path)
         } else {
           alert("Unexpected status :(")
         }
