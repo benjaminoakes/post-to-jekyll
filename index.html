@@ -49,9 +49,10 @@
 
 <script>
   var HTTP = {
-    put: function (url, data) {
+    put: function (url, headers, data) {
       var request = new XMLHttpRequest()
       request.open("PUT", url, true)
+      request.setRequestHeader("Authorization", headers.Authorization)
       request.send(data)
       return request
     }
@@ -69,7 +70,7 @@
     }
 
     repoUrl (fragment) {
-      return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}?access_token=${this.accessToken}`
+      return `https://api.github.com/repos/${this.owner}/${this.repo}/${fragment}`
     }
 
     blobUrl (path) {
@@ -84,12 +85,13 @@
       cleanedContent = content.replace(/[^\x00-\x7F]/g, "")
 
       url = this.repoUrl(`contents/${path}`)
+      headers = { Authorization: `token ${this.accessToken}` }
       data = JSON.stringify({
         message: `Create ${path}`,
         content: btoa(cleanedContent),
       })
 
-      return HTTP.put(url, data)
+      return HTTP.put(url, headers, data)
     }
   }
 
