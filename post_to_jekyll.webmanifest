@@ -1,0 +1,23 @@
+{
+  "name": "Post to Jekyll",
+  "short_name": "Jekyll",
+  "start_url": "/",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color":"#ffffff",
+  "icons": [
+    {
+      "src": "erlenmeyer.svg",
+      "sizes": "512x512",
+      "type": "image/svg+xml"
+    }
+  ],
+  "share_target": {
+    "action": "/",
+    "params": {
+      "title": "title",
+      "text": "text",
+      "url": "url"
+    }
+  }
+}
