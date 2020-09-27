@@ -186,6 +186,14 @@ ${this.body.value}
     return false
   }
 
+  function handleShare() {
+    const url = new URL(window.location)
+
+    document.forms.post.title.value = url.searchParams.get("title")
+    document.forms.post.body.value = url.searchParams.get("text")
+  }
+
+  handleShare()
 </script>
   </body>
 </html>
