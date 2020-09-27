@@ -188,9 +188,13 @@ ${this.body.value}
 
   function handleShare() {
     const url = new URL(window.location)
+    const title  = url.searchParams.get("title")
+    const text = url.searchParams.get("text")
+    const textProbabyUrl = !text.match(/\s/)
+    const body = textProbabyUrl ? `>\n\nSource: [${title}](${text})` : text
 
-    document.forms.post.title.value = url.searchParams.get("title")
-    document.forms.post.body.value = url.searchParams.get("text")
+    document.forms.post.title.value = title
+    document.forms.post.body.value = body
   }
 
   handleShare()
