@@ -17,6 +17,7 @@
 
     <p>
       <a href="#" id="build-from-markdown" class="btn btn-secondary btn-sm">Build Post from Markdown Link</a>
+      <a href="javascript:handleConvertCharacters('#post-body')" class="btn btn-secondary btn-sm">Convert characters</a>
     </p>
 
     <form name="post">
@@ -24,7 +25,7 @@
       <br>
       <input name="category" placeholder="Category" autocomplete="off" style="width: 100%">
       <br>
-      <textarea name="body" rows="15" style="width: 100%"></textarea>
+      <textarea name="body" id="post-body" rows="15" style="width: 100%"></textarea>
       <br>
       <input class="btn btn-primary" type="submit" value="Post">
       <input class="btn btn-danger" type="reset">
@@ -145,6 +146,16 @@
         document.forms.post.body.value = `> \n\nSource: ${markdown}`
       }
     }, 100)
+  }
+  
+  function convertToAscii(string) {
+    return string.replace(/[\u2018\u2019]/g, "'").replace(/[\u201C\u201D]/g, '"')
+  }
+  
+  function handleConvertCharacters(selector) {
+    const element = document.querySelector(selector)
+    
+    element.value = convertToAscii(element.value)
   }
 
   document.forms.post.onsubmit = function (event) {
